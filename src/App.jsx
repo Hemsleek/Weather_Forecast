@@ -16,7 +16,9 @@ const MainSection = () => {
 
             <div className="cloud-info">
               <img src="./imgs/cloud.svg" alt="cloud-icon"/>
-              <span>72<sup>o<sub>F</sub></sup> </span>
+              <span>
+                72<sup className='farahient'>o<sub>F</sub></sup> 
+              </span>
             </div>
             <span>Cloudy</span>
           </div>
@@ -46,7 +48,7 @@ const AdditionalInfo = () => {
       </div>
       <div className="extra-info">
         {
-          [1,2,3,4].map((day, dayIndex) => (<div key={`day-info-${dayIndex}`} className="day-info">
+          [1,2,3,4].map((day, dayIndex) => (<div key={`day-info-${dayIndex}`} className={`day-info ${dayIndex===0? 'active' : ''}`}>
               <span>April 12</span>
               <img src="./imgs/cloud.svg" alt="cloud-icon"/>
               <span>Humidity</span>
