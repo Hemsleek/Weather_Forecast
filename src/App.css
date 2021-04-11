@@ -1,4 +1,142 @@
 .App {
-  display: grid;
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius:.5rem;
+  background:#F3F6FA;
+  width:90vw;
+  height:90vh;
+
+}
+.wrapper{
+  display:grid;
+  grid-template-columns:22vw 1fr;
+  column-gap: 4rem;
+  padding:2rem;
+  width:90%;
+  height:90%;
+  background:#fff;
+  border-radius:.5rem;
+  box-shadow: 1px 1px 1px 2px #E1EDFF;
+}
+.MainSection{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.searchBar input{
+  padding:.5rem .5rem;
+  border-radius:.5rem;
+  margin-left:.5rem;
+  border:1px solid black;
+  font-size:.9rem;
+
+}
+.searchBar input:focus{
+  outline:none;
+}
+.searchBar span{
+  font-weight: bold;
+}
+.main{
+  display:flex;
+  flex-direction: column;
+
+}
+.MainSection .time{
+  text-align: center;
+  margin-bottom:1rem;
+}
+
+.weather-condition{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  margin:3rem 0;
+}
+.weather-condition > span{
+  margin-top:.5rem;
+  color:#000;
+  font-weight:bold;
+  font-size:1.3rem;
+}
+.weather-condition .cloud-info{
+  display:flex;
+  align-items: center;
+  column-gap: .5rem;
+}
+.cloud-info img{
+  width:6rem;
+}
+.cloud-info span{
+  color:black;
+  font-weight: bold;
+  font-size:2.5rem;
+}
+
+.MainSection .info{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top:1rem;
+}
+.info-item{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  padding:1rem 1.2rem;
+}
+.info-item span:last-child{
+  font-weight: 500;
+  margin-top:1.5rem;
+  color:black;
+}
+
+.AdditionalInfo{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+
+}
+.chart{
+  text-align: center;
+  height:10rem;
+  background:blue;
+  margin:1rem 0;
+  color:#fff;
+}
+.extra-info{
+  display:flex;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 100%;
+}
+.extra-info .day-info{
+  background-color: #5596F6;
+  width:fit-content;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  padding:2rem 2.5rem;
+  border-radius: 0.3rem;
+  color:#fff;
+
+}
+.day-info img{
+  filter:invert(1);
+  margin:1rem 0;
+}
+.day-info span:last-of-type{
+  margin-top:.5rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.day-info span:first-of-type{
+  font-weight: bold;
+}
+.day-info span:nth-child(3){
+  font-weight: 300;
 }
