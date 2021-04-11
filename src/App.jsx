@@ -1,4 +1,5 @@
 import './App.css';
+import { useState } from 'react'
 
 const MainSection = () => {
   return(
@@ -40,15 +41,18 @@ const MainSection = () => {
 }
 
 const AdditionalInfo = () => {
+
+  const [daysIndex, setDaysIndex] = useState(0)
+
   return(
-    <section className="AdditionalInfo">
+  <section className="AdditionalInfo">
       <div className="chart-wrapper">
         <span>Temperature</span>
         <div className="chart"> chart</div>
       </div>
       <div className="extra-info">
         {
-          [1,2,3,4].map((day, dayIndex) => (<div key={`day-info-${dayIndex}`} className={`day-info ${dayIndex===0? 'active' : ''}`}>
+          [1,2,3,4].map((day, dayIndex) => (<div key={`day-info-${dayIndex}`} className={`day-info ${dayIndex===daysIndex? 'active' : ''}`} onClick={() => setDaysIndex(dayIndex)}>
               <span>April 12</span>
               <img src="./imgs/cloud.svg" alt="cloud-icon"/>
               <span>Humidity</span>
