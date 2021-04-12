@@ -1,5 +1,6 @@
 import './App.css';
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
+import { fetchByCityName } from './services';
 
 const MainSection = () => {
   return(
@@ -65,6 +66,12 @@ const AdditionalInfo = () => {
 }
 
 function App() {
+
+  useEffect(() => {
+    fetchByCityName().then(data => {console.log(data)})
+
+  }, [])
+
   return (
     <div className="App">
       <div className="wrapper">
@@ -73,6 +80,6 @@ function App() {
       </div>
     </div>
   );
-}
+} 
 
 export default App;

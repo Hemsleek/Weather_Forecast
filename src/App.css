@@ -120,7 +120,6 @@
 }
 .extra-info{
   display:flex;
-  align-items: stretch;
   justify-content: space-between;
   width: 100%;
 }
