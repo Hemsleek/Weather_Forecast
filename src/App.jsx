@@ -1,6 +1,6 @@
 import './App.css';
 import { useState,useEffect } from 'react'
-import { fetchByCityName } from './services';
+import { fetchByCityName, fetchByCoord } from './services';
 
 const MainSection = () => {
   return(
@@ -66,9 +66,19 @@ const AdditionalInfo = () => {
 }
 
 function App() {
-
+  
   useEffect(() => {
-    fetchByCityName().then(data => {console.log(data)})
+
+    if(navigator.geolocation){
+      const userLocation = window.navigator.geolocation
+      const successResponse = ({coords: {latitude, longitude}}) =>{
+          fetchByCoord(latitude,longitude).then(console.log).catch(console.log)
+      }
+      userLocation.getCurrentPosition(successResponse , console.log)
+    }
+    else{
+      fetchByCityName('london').then(console.log).catch(console.log)
+    }
 
   }, [])
 
