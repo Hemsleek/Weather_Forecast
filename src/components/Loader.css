@@ -1,0 +1,18 @@
+.Loader{
+    color:#5596F6;
+    font-size:2rem;
+    flex-grow: 1;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    animation:pulse ease-in-out infinite 2s;
+}
+@keyframes pulse{
+    0%,100%{
+        opacity:.8;
+    }
+    50%{
+        opacity:.5;
+    }
+
+}

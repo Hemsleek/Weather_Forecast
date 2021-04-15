@@ -2,6 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react'
 import { currentWeather, fetchByCityName, fetchByCoord } from './services';
 import { isObjEmpty, weatherForecastFilter } from './utils';
+import Loader from './components/Loader';
 
 const MainSection = ({currentWeather}) => {
   const [searchInput, setSearchInput] = useState('')
@@ -12,8 +13,6 @@ const MainSection = ({currentWeather}) => {
     
     
   }, [currentWeather])
-
-  const weatherIcon = !isObjEmpty(currentWeather)? `http://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png` : './imgs/cloud.svg'
 
   return(
       <section className="MainSection">
@@ -27,20 +26,22 @@ const MainSection = ({currentWeather}) => {
           />
 
         </div>
+        {
+          !isObjEmpty(currentWeather)?
+            <div className="main">
         
-        <div className="main">
-          <span className="time">12.05 PM, Sun, April 11, 2021 </span>
+            <span className="time">12.05 PM, Sun, April 11, 2021 </span>
 
-          <div className="weather-condition">
+            <div className="weather-condition">
 
-            <div className="cloud-info">
-              <img src={weatherIcon} alt="cloud-icon"/>
-              <span>
-                72<sup className='farahient'>o<sub>F</sub></sup> 
-              </span>
+              <div className="cloud-info">
+                <img src={`http://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`} alt="cloud-icon"/>
+                <span>
+                  72<sup className='farahient'>o<sub>F</sub></sup> 
+                </span>
+              </div>
+              <span>{currentWeather.weather[0].description}</span>
             </div>
-            <span>Cloudy</span>
-          </div>
 
           <div className="info">
             <div className="humidity info-item">
@@ -53,7 +54,9 @@ const MainSection = ({currentWeather}) => {
             </div>
           </div>
         </div>
-
+          :
+            <Loader />
+        }
       </section>
   )
 }
