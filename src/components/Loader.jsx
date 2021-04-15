@@ -1,10 +1,17 @@
 import React from 'react'
 import './Loader.css'
 
-function Loader() {
+function Loader({additionalInfo}) {
+
     return (
         <div className="Loader">
-            Loading...
+            {!additionalInfo?
+            <span>
+                Loading...
+            </span>
+            :
+            <span className="spinner"/>
+            }
         </div>
     )
 }

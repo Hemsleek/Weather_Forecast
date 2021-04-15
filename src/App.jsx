@@ -62,12 +62,15 @@ const MainSection = ({currentWeather}) => {
   )
 }
 
-const AdditionalInfo = () => {
+const AdditionalInfo = ({weatherforecast}) => {
 
   const [daysIndex, setDaysIndex] = useState(0)
 
   return(
-  <section className="AdditionalInfo">
+   <>
+   { weatherforecast.length?
+    <section className="AdditionalInfo">
+   
       <div className="chart-wrapper">
         <span>Temperature</span>
         <div className="chart"> chart</div>
@@ -83,6 +86,10 @@ const AdditionalInfo = () => {
         }
       </div>
     </section>
+    :
+    <Loader additionalInfo />
+    }
+  </>
   )
 }
 

@@ -7,12 +7,31 @@
     justify-content: center;
     animation:pulse ease-in-out infinite 2s;
 }
+.spinner{
+    width:4rem;
+    height:4rem;
+    border-radius: 100%;
+    border:4px solid transparent;
+    border-top:#5596F6 4px solid;
+    display:block;
+    animation:spinner linear infinite 2s;
+}
+
 @keyframes pulse{
     0%,100%{
         opacity:.8;
     }
     50%{
         opacity:.5;
+    }
+
+}
+@keyframes spinner{
+    0%,100%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
     }
 
 }
