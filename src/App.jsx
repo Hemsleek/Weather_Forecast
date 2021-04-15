@@ -1,14 +1,31 @@
 import './App.css';
-import { useState,useEffect } from 'react'
-import { fetchByCityName, fetchByCoord } from './services';
+import { useState, useEffect } from 'react'
+import { currentWeather, fetchByCityName, fetchByCoord } from './services';
+import { isObjEmpty, weatherForecastFilter } from './utils';
 
-const MainSection = () => {
+const MainSection = ({currentWeather}) => {
+  const [searchInput, setSearchInput] = useState('')
+
+  useEffect(() => {
+    !isObjEmpty(currentWeather) &&
+      setSearchInput((_) => currentWeather.name)
+    
+    
+  }, [currentWeather])
+
+  const weatherIcon = !isObjEmpty(currentWeather)? `http://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png` : './imgs/cloud.svg'
+
   return(
       <section className="MainSection">
 
         <div className="searchBar">
           <span>Your City</span>
-          <input type="text" placeholder='Enter City Name'/>
+          <input 
+            type="text" value={searchInput} 
+            onChange ={({target}) =>setSearchInput(target.value)}
+            placeholder='Enter City Name'
+          />
+
         </div>
         
         <div className="main">
@@ -17,7 +34,7 @@ const MainSection = () => {
           <div className="weather-condition">
 
             <div className="cloud-info">
-              <img src="./imgs/cloud.svg" alt="cloud-icon"/>
+              <img src={weatherIcon} alt="cloud-icon"/>
               <span>
                 72<sup className='farahient'>o<sub>F</sub></sup> 
               </span>
@@ -66,18 +83,43 @@ const AdditionalInfo = () => {
 }
 
 function App() {
-  
+
+  const [weatherData, setWeatherData] = useState([])
+  const weatherToDisplay=[]
+  console.log(weatherData)
+   weatherData.length===2 && 
+    weatherData.forEach((data,  dataIndex) => {
+      if(dataIndex===0) weatherToDisplay.push(data)
+      else{
+        const forecastData = weatherData[1].list.filter(item => 
+          weatherForecastFilter(item.dt_txt)
+        )
+        weatherToDisplay.push(...forecastData)
+
+      }
+    })
+  console.log({weatherToDisplay})
+
+
   useEffect(() => {
 
     if(navigator.geolocation){
       const userLocation = window.navigator.geolocation
       const successResponse = ({coords: {latitude, longitude}}) =>{
-          fetchByCoord(latitude,longitude).then(console.log).catch(console.log)
+          currentWeather(null,latitude, longitude)
+            .then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))} ).catch(console.log)
+          fetchByCoord(latitude,longitude).then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))}).catch(console.log)
       }
-      userLocation.getCurrentPosition(successResponse , console.log)
+      const errorResponse = (err) =>{
+        currentWeather('london').then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))}).catch(console.log)
+        fetchByCityName('london').then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))}).catch(console.log)
+      }
+
+      userLocation.getCurrentPosition(successResponse , errorResponse)
     }
     else{
-      fetchByCityName('london').then(console.log).catch(console.log)
+      currentWeather('london').then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))}).catch(console.log)
+      fetchByCityName('london').then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))}).catch(console.log)
     }
 
   }, [])
@@ -85,8 +127,8 @@ function App() {
   return (
     <div className="App">
       <div className="wrapper">
-        <MainSection />
-        <AdditionalInfo />
+        <MainSection currentWeather ={weatherToDisplay[0] || { }} />
+        <AdditionalInfo weatherforecast ={weatherToDisplay}/>
       </div>
     </div>
   );
