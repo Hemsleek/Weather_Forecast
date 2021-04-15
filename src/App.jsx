@@ -1,7 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react'
 import { currentWeather, fetchByCityName, fetchByCoord } from './services';
-import { isObjEmpty, weatherForecastFilter } from './utils';
+import { cityDateTimeInfo, isObjEmpty, weatherForecastFilter } from './utils';
 import Loader from './components/Loader';
 
 const MainSection = ({currentWeather}) => {
@@ -13,6 +13,7 @@ const MainSection = ({currentWeather}) => {
     
     
   }, [currentWeather])
+  const weatherTemp = !isObjEmpty(currentWeather) && Math.round(currentWeather.main.temp)
 
   return(
       <section className="MainSection">
@@ -30,14 +31,14 @@ const MainSection = ({currentWeather}) => {
           !isObjEmpty(currentWeather)?
             <div className="main">
         
-            <span className="time">12.05 PM, Sun, April 11, 2021 </span>
+            <span className="time">{cityDateTimeInfo(currentWeather.dt,currentWeather.timezone)} </span>
 
             <div className="weather-condition">
 
               <div className="cloud-info">
                 <img src={`http://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`} alt="cloud-icon"/>
                 <span>
-                  72<sup className='farahient'>o<sub>F</sub></sup> 
+                  {weatherTemp}<sup className='farahient'>o<sub>F</sub></sup> 
                 </span>
               </div>
               <span>{currentWeather.weather[0].description}</span>
@@ -46,11 +47,11 @@ const MainSection = ({currentWeather}) => {
           <div className="info">
             <div className="humidity info-item">
               <span>Humidity</span>
-              <span>45%</span>
+              <span>{currentWeather.main.humidity}%</span>
             </div>
             <div className="wind-speed info-item">
               <span>Wind Speed</span>
-              <span>19.2 km/j</span>
+              <span>{currentWeather.wind.speed} km/j</span>
             </div>
           </div>
         </div>

@@ -63,6 +63,10 @@
   font-weight:bold;
   font-size:1.3rem;
 }
+.weather-condition span:last-of-type{
+  text-transform: capitalize;
+}
+
 .weather-condition .cloud-info{
   display:flex;
   align-items: center;
@@ -86,6 +90,7 @@
   font-weight: bold;
   font-size:2.5rem;
 }
+
 
 .MainSection .info{
   display:flex;
