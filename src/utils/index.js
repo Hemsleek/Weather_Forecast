@@ -1,3 +1,9 @@
+const months = 'January,Feburary,March,April,May,June,July,August,September,October,November,December'.split(',')
+
+const testLength = (param) => {
+    return ('0').repeat(2-(String(param).length)) + param
+}
+
 export const weatherForecastFilter = (dateTxt) =>{
      const dataArray = dateTxt.split(' ')
      const date = parseInt(dataArray[0].split('-')[2],10)
@@ -11,16 +17,21 @@ export const isObjEmpty = (obj) => {
    return true
 }
 
-export const cityDateTimeInfo = (timeStamp,timeZone ) => {
+export const cityDateTimeInfo = (timeStamp,timeZone,additionalInfo ) => {
 
     // format ===> 12.05 PM, Sun, April 11, 2021
     // new Date() format ===> Thu Apr 15 2021 12:50:12 GMT+0100 (West Africa Standard Time)
-    const testLength = (param) => {
-        return ('0').repeat(2-(String(param).length)) + param
-    }
-    
-    const date = new Date((timeStamp * 1000) + (timeZone * 1000))
+
+    const date = new Date((timeStamp + timeZone) * 1000)
     const dateSlice = date.toString().split(' ').slice(0,5)
+
+    if(additionalInfo) {
+        let month = months[date.getMonth()]
+        month = month.length <= 6? month : dateSlice[1]
+
+        return `${month} ${date.getDate()}`
+    }
+
     let hour = parseInt(dateSlice[4].split(':')[0],10)
     let ampm = 'AM'
     if(hour >= 12) ampm ='PM'

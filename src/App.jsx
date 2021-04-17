@@ -77,13 +77,16 @@ const AdditionalInfo = ({weatherforecast}) => {
       </div>
       <div className="extra-info">
         {
-          [1,2,3,4].map((day, dayIndex) => (<div key={`day-info-${dayIndex}`} className={`day-info ${dayIndex===daysIndex? 'active' : ''}`} onClick={() => setDaysIndex(dayIndex)}>
-              <span>April 12</span>
-              <img src="./imgs/cloud.svg" alt="cloud-icon"/>
+          weatherforecast.map((day, dayIndex) => (<div key={`day-info-${dayIndex}`} className={`day-info ${dayIndex===daysIndex? 'active' : ''}`} onClick={() => setDaysIndex(dayIndex)}>
+              <span>
+                {cityDateTimeInfo(day.dt,weatherforecast[0].timezone,true)}
+              </span>
+              <img src={`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`} alt="cloud-icon"/>
               <span>Humidity</span>
-              <span>30%</span>
+              <span>{day.main.humidity}%</span>
           </div>))
         }
+        <div></div>
       </div>
     </section>
     :
@@ -121,6 +124,7 @@ function App() {
             .then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))} ).catch(console.log)
           fetchByCoord(latitude,longitude).then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))}).catch(console.log)
       }
+
       const errorResponse = (err) =>{
         currentWeather('london').then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))}).catch(console.log)
         fetchByCityName('london').then(data =>{setWeatherData(prevWeather => prevWeather.concat(data))}).catch(console.log)

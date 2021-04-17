@@ -1,7 +1,5 @@
 const apiKey = process.env.REACT_APP_API_KEY 
 
-
-
 export const fetchByCityName = (cityName) => {
   const response = fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=imperial&appid=${apiKey}`)
     .then(res => res.json())
