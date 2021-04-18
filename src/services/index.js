@@ -12,7 +12,7 @@ export const fetchByCoord = (lat,lon) => {
     return response.then(res => res.json())
 }
 
-export const currentWeather = (cityName=null,lat, lon) => {
+export const fetchCurrentWeather = (cityName=null,lat, lon) => {
   let response
   if(cityName!==null){
     response = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${apiKey}`)
