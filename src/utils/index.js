@@ -4,12 +4,15 @@ const testLength = (param) => {
     return ('0').repeat(2-(String(param).length)) + param
 }
 
-const getZoneDate = (timeZone) => {
+const getZoneDate = (date,timeZone) => {
+    if(date) return new Date(date)
     const localDate= new Date()
     // getTimezoneOffset is in minute(convert to ms)
     const utcTime = localDate.getTime() + (localDate.getTimezoneOffset() * 60000)
     return new Date(utcTime + (timeZone * 1000))
 }
+
+export const dateParser = ({dt_txt}) => dt_txt? dt_txt.replace(' ','T') : null
 
 export const weatherForecastFilter = (dateTxt) =>{
      const dataArray = dateTxt.split(' ')
@@ -24,13 +27,13 @@ export const isObjEmpty = (obj) => {
    return true
 }
 
-export const cityDateTimeInfo = (timeZone,forecastTimestamp ) => {
+export const cityDateTimeInfo = (date,timeZone,forecastTimestamp ) => {
 
     // format ===> 12.05 PM, Sun, April 11, 2021
     // new Date() format ===> Thu Apr 15 2021 12:50:12 GMT+0100 (West Africa Standard Time)
     
-    const date = getZoneDate(timeZone)
-    const dateSlice = date.toString().split(' ').slice(0,5)
+    const _date = getZoneDate(date,timeZone)
+    const dateSlice = _date.toString().split(' ').slice(0,5)
 
     if(forecastTimestamp) {
         const forecastDate = new Date(forecastTimestamp * 1000)
@@ -47,7 +50,7 @@ export const cityDateTimeInfo = (timeZone,forecastTimestamp ) => {
     if(hour > 12) hour = hour - 12
     if(hour===0 && ampm==='AM') hour = 12
     hour= testLength(hour)
-    let minute = date.getMinutes()
+    let minute = _date.getMinutes()
     minute = testLength(minute)
 
 

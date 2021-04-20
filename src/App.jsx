@@ -1,7 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { fetchCurrentWeather, fetchByCityName, fetchByCoord } from "./services";
-import { cityDateTimeInfo, isObjEmpty, weatherForecastFilter } from "./utils";
+import { cityDateTimeInfo, isObjEmpty, weatherForecastFilter,dateParser } from "./utils";
 import Loader from "./components/Loader";
 
 
@@ -11,8 +11,10 @@ const MainSection = ({ currentWeather,handleCitySearch }) => {
   useEffect(() => {
     !isObjEmpty(currentWeather) && setSearchInput((_) => currentWeather.name);
   }, [currentWeather]);
+
   const weatherTemp =
     !isObjEmpty(currentWeather) && Math.round(currentWeather.main.temp);
+    
 
   return (
     <section className="MainSection">
@@ -31,7 +33,7 @@ const MainSection = ({ currentWeather,handleCitySearch }) => {
       {!isObjEmpty(currentWeather) ? (
         <div className="main">
           <span className="time">
-            {cityDateTimeInfo(currentWeather.timezone)}{" "}
+            {cityDateTimeInfo(dateParser(currentWeather),currentWeather.timezone)}{" "}
           </span>
 
           <div className="weather-condition">
@@ -70,6 +72,7 @@ const MainSection = ({ currentWeather,handleCitySearch }) => {
 
 const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
 
+
   return (
     <>
       {weatherforecast.length ? (
@@ -86,7 +89,7 @@ const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
                 onClick={() => setDaysIndex(dayIndex)}
               >
                 <span>
-                  {dayIndex===0? 'Today' : cityDateTimeInfo(day.timezone, day.dt)}
+                  {dayIndex===0? 'Today' : cityDateTimeInfo(dateParser(day),day.timezone, day.dt)}
                 </span>
                 <img
                   src={`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
@@ -201,7 +204,7 @@ function App() {
   return (
     <div className="App">
       <div className="wrapper">
-        <MainSection currentWeather={weatherToDisplay[0] || {}} handleCitySearch={handleCitySearch} />
+        <MainSection currentWeather={weatherToDisplay[daysIndex] || {}} handleCitySearch={handleCitySearch} />
         <AdditionalInfo weatherforecast={weatherToDisplay} daysIndex = {daysIndex} setDaysIndex = {setDaysIndex} />
       </div>
     </div>
