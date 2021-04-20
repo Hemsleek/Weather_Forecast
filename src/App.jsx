@@ -4,6 +4,7 @@ import { fetchCurrentWeather, fetchByCityName, fetchByCoord } from "./services";
 import { cityDateTimeInfo, isObjEmpty, weatherForecastFilter } from "./utils";
 import Loader from "./components/Loader";
 
+
 const MainSection = ({ currentWeather,handleCitySearch }) => {
   const [searchInput, setSearchInput] = useState("");
 
@@ -67,8 +68,7 @@ const MainSection = ({ currentWeather,handleCitySearch }) => {
   );
 };
 
-const AdditionalInfo = ({ weatherforecast }) => {
-  const [daysIndex, setDaysIndex] = useState(0);
+const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
 
   return (
     <>
@@ -86,7 +86,7 @@ const AdditionalInfo = ({ weatherforecast }) => {
                 onClick={() => setDaysIndex(dayIndex)}
               >
                 <span>
-                  {dayIndex===0? 'Today' : cityDateTimeInfo(weatherforecast[0].timezone, true)}
+                  {dayIndex===0? 'Today' : cityDateTimeInfo(day.timezone, day.dt)}
                 </span>
                 <img
                   src={`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
@@ -107,6 +107,8 @@ const AdditionalInfo = ({ weatherforecast }) => {
 
 function App() {
   const [weatherData, setWeatherData] = useState([]);
+  const [daysIndex, setDaysIndex] = useState(0);
+
 
   const weatherToDisplay = [];
   console.log(weatherData);
@@ -114,8 +116,14 @@ function App() {
     weatherData.forEach((data, dataIndex) => {
       if (dataIndex === 0) weatherToDisplay.push(data);
       else {
-        const forecastData = weatherData[1].list.filter((item) =>
-          weatherForecastFilter(item.dt_txt)
+        const forecastData = weatherData[1].list.filter((item) =>{
+
+        if(weatherForecastFilter(item.dt_txt)) {
+          item.timezone = weatherData[0].timezone
+          return true
+        }
+        return false
+      }
         );
         weatherToDisplay.push(...forecastData);
       }
@@ -136,7 +144,8 @@ function App() {
           .then((data) => {
             setWeatherData((prevWeather) => prevWeather.concat(data));
           })
-          .catch(console.log);
+          .catch(console.log)
+          .finally(() => {setDaysIndex(0)})
 
       
 
@@ -173,7 +182,7 @@ function App() {
           .catch(console.log);
       };
 
-      userLocation.getCurrentPosition(successResponse, errorResponse);
+      userLocation.getCurrentPosition(successResponse, errorResponse,{ enableHighAccuracy: true});
     } else {
       fetchCurrentWeather("london")
         .then((data) => {
@@ -193,7 +202,7 @@ function App() {
     <div className="App">
       <div className="wrapper">
         <MainSection currentWeather={weatherToDisplay[0] || {}} handleCitySearch={handleCitySearch} />
-        <AdditionalInfo weatherforecast={weatherToDisplay} />
+        <AdditionalInfo weatherforecast={weatherToDisplay} daysIndex = {daysIndex} setDaysIndex = {setDaysIndex} />
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ export const isObjEmpty = (obj) => {
    return true
 }
 
-export const cityDateTimeInfo = (timeZone,additionalInfo ) => {
+export const cityDateTimeInfo = (timeZone,forecastTimestamp ) => {
 
     // format ===> 12.05 PM, Sun, April 11, 2021
     // new Date() format ===> Thu Apr 15 2021 12:50:12 GMT+0100 (West Africa Standard Time)
@@ -32,11 +32,13 @@ export const cityDateTimeInfo = (timeZone,additionalInfo ) => {
     const date = getZoneDate(timeZone)
     const dateSlice = date.toString().split(' ').slice(0,5)
 
-    if(additionalInfo) {
-        let month = months[date.getMonth()]
-        month = month.length <= 6? month : dateSlice[1]
+    if(forecastTimestamp) {
+        const forecastDate = new Date(forecastTimestamp * 1000)
+        const forecastMonth = forecastDate.toString().split(' ')[1]
 
-        return `${month} ${date.getDate()}`
+        let month = months[forecastDate.getMonth()]
+        month = month.length <= 6? month : forecastMonth
+        return `${month} ${forecastDate.getDate()}`
     }
 
     let hour = parseInt(dateSlice[4].split(':')[0],10)
