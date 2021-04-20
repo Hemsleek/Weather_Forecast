@@ -1,5 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
+import {Line} from 'react-chartjs-2'
+
 import { fetchCurrentWeather, fetchByCityName, fetchByCoord } from "./services";
 import { cityDateTimeInfo, isObjEmpty, weatherForecastFilter,dateParser } from "./utils";
 import Loader from "./components/Loader";
@@ -72,14 +74,46 @@ const MainSection = ({ currentWeather,handleCitySearch }) => {
 
 const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
 
+  const chartData = weatherforecast && {
 
+    Labels:weatherforecast.map(weather => cityDateTimeInfo(dateParser(weather),weather.timezone, weather.dt) ),
+
+    datasets:[
+      {
+        label: 'Temperature',
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: 'rgba(75,192,192,1)',
+        borderColor: 'rgba(0,0,0,1)',
+        borderWidth: 2,
+        data:weatherforecast.map(weather => Math.round(weather.main.temp))
+      }
+    ]
+
+  }
+  
   return (
     <>
       {weatherforecast.length ? (
         <section className="AdditionalInfo">
           <div className="chart-wrapper">
             <span>Temperature</span>
-            <div className="chart"> chart</div>
+            <div className="chart"> 
+              <Line 
+                data={chartData}
+                options={{
+                  title:{
+                    display:true,
+                    text:'Temperature Forecast',
+                    // fontSize:20
+                  },
+                  // legend:{
+                  //   display:true,
+                  //   position:'right'
+                  // }
+                }}
+              />
+            </div>
           </div>
           <div className="extra-info">
             {weatherforecast.map((day, dayIndex) => (
