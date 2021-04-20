@@ -4,6 +4,13 @@ const testLength = (param) => {
     return ('0').repeat(2-(String(param).length)) + param
 }
 
+const getZoneDate = (timeZone) => {
+    const localDate= new Date()
+    // getTimezoneOffset is in minute(convert to ms)
+    const utcTime = localDate.getTime() + (localDate.getTimezoneOffset() * 60000)
+    return new Date(utcTime + (timeZone * 1000))
+}
+
 export const weatherForecastFilter = (dateTxt) =>{
      const dataArray = dateTxt.split(' ')
      const date = parseInt(dataArray[0].split('-')[2],10)
@@ -17,12 +24,12 @@ export const isObjEmpty = (obj) => {
    return true
 }
 
-export const cityDateTimeInfo = (timeStamp,timeZone,additionalInfo ) => {
+export const cityDateTimeInfo = (timeZone,additionalInfo ) => {
 
     // format ===> 12.05 PM, Sun, April 11, 2021
     // new Date() format ===> Thu Apr 15 2021 12:50:12 GMT+0100 (West Africa Standard Time)
-
-    const date = new Date((timeStamp + timeZone) * 1000)
+    
+    const date = getZoneDate(timeZone)
     const dateSlice = date.toString().split(' ').slice(0,5)
 
     if(additionalInfo) {
@@ -44,3 +51,4 @@ export const cityDateTimeInfo = (timeStamp,timeZone,additionalInfo ) => {
 
     return `${hour}:${minute} ${ampm}, ${dateSlice[0]}, ${dateSlice[1]} ${dateSlice[2]}, ${dateSlice[3]}`
 }
+

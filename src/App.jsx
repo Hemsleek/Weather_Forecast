@@ -30,7 +30,7 @@ const MainSection = ({ currentWeather,handleCitySearch }) => {
       {!isObjEmpty(currentWeather) ? (
         <div className="main">
           <span className="time">
-            {cityDateTimeInfo(currentWeather.dt, currentWeather.timezone)}{" "}
+            {cityDateTimeInfo(currentWeather.timezone)}{" "}
           </span>
 
           <div className="weather-condition">
@@ -86,7 +86,7 @@ const AdditionalInfo = ({ weatherforecast }) => {
                 onClick={() => setDaysIndex(dayIndex)}
               >
                 <span>
-                  {cityDateTimeInfo(day.dt, weatherforecast[0].timezone, true)}
+                  {dayIndex===0? 'Today' : cityDateTimeInfo(weatherforecast[0].timezone, true)}
                 </span>
                 <img
                   src={`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
