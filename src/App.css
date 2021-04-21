@@ -117,8 +117,8 @@
 }
 .chart {
   text-align: center;
-  height: 10rem;
-  background: #cddcf2;
+  /* height: 10rem; */
+  /* background: #cddcf2; */
   margin: 1rem 0;
   color: #fff;
 }

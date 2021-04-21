@@ -74,43 +74,61 @@ const MainSection = ({ currentWeather,handleCitySearch }) => {
 
 const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
 
-  const chartData = weatherforecast && {
+  const chartData = weatherforecast.length && {
 
-    Labels:weatherforecast.map(weather => cityDateTimeInfo(dateParser(weather),weather.timezone, weather.dt) ),
-
+    labels:weatherforecast.map(weather => cityDateTimeInfo(dateParser(weather),weather.timezone, weather.dt) ),
+  
     datasets:[
       {
         label: 'Temperature',
-        fill: false,
+        fill: true,
         lineTension: 0.5,
-        backgroundColor: 'rgba(75,192,192,1)',
-        borderColor: 'rgba(0,0,0,1)',
+        backgroundColor: '#EEF4FE',
+        borderColor: '#5596F6',
         borderWidth: 2,
         data:weatherforecast.map(weather => Math.round(weather.main.temp))
+        
       }
     ]
 
   }
+  console.log(chartData);
   
   return (
     <>
       {weatherforecast.length ? (
         <section className="AdditionalInfo">
           <div className="chart-wrapper">
-            <span>Temperature</span>
             <div className="chart"> 
               <Line 
+                height={ 100 }
                 data={chartData}
+                
                 options={{
-                  title:{
+
+                  scales: {
+                    xAxes: [
+                      {
+                        display: false,
+                      },
+                    ],
+                    yAxes: [
+                      {
+                        display: false,
+                        ticks:{
+                          min:80
+                        }
+                      },
+                    ],
+                  },                 
+               title:{
                     display:true,
-                    text:'Temperature Forecast',
-                    // fontSize:20
+                    text:'Weather Forecast',
+                    fontSize:20
                   },
-                  // legend:{
-                  //   display:true,
-                  //   position:'right'
-                  // }
+                  legend:{
+                    display:false
+                  }
                 }}
               />
             </div>
