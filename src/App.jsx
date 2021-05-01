@@ -1,7 +1,8 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import {Line} from 'react-chartjs-2'
-
+// import 'chartjs-plugin-labels'
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { fetchCurrentWeather, fetchByCityName, fetchByCoord } from "./services";
 import { cityDateTimeInfo, isObjEmpty, weatherForecastFilter,dateParser } from "./utils";
 import Loader from "./components/Loader";
@@ -76,16 +77,21 @@ const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
 
   const chartData = weatherforecast.length && {
 
-    labels:weatherforecast.map(weather => cityDateTimeInfo(dateParser(weather),weather.timezone, weather.dt) ),
-  
+    labels:weatherforecast.map((weather,index) =>{ 
+      
+      return index===0? `Today (${cityDateTimeInfo(dateParser(weather),weather.timezone, weather.dt)})`: cityDateTimeInfo(dateParser(weather),weather.timezone, weather.dt) 
+    }),
     datasets:[
       {
         label: 'Temperature',
-        fill: true,
-        lineTension: 0.5,
+        fill:true,
+        lineTension: 0.2,
         backgroundColor: '#EEF4FE',
         borderColor: '#5596F6',
-        borderWidth: 2,
+        pointBackgroundColor:'#5596F6',
+        pointRadius:weatherforecast.map((item, itemIndex) => itemIndex === daysIndex? 4 : 0),
+        spanGaps:true,
+        borderWidth: 1.5,
         data:weatherforecast.map(weather => Math.round(weather.main.temp))
         
       }
@@ -99,13 +105,28 @@ const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
       {weatherforecast.length ? (
         <section className="AdditionalInfo">
           <div className="chart-wrapper">
+            
             <div className="chart"> 
               <Line 
+                plugins={[ChartDataLabels]}
                 height={ 100 }
                 data={chartData}
-                
                 options={{
-
+                  plugins:{
+                    datalabels:{
+                      color:'blue',
+                      padding:{
+                        bottom:100
+                      },
+                      label:{}
+                    }
+                  },
+                  layout:{
+                    padding:{
+                      left:4,
+                      right:4
+                    }
+                  },
                   scales: {
                     xAxes: [
                       {
@@ -116,15 +137,16 @@ const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
                       {
                         display: false,
                         ticks:{
-                          min:80
+                          min: Math.min(...weatherforecast.map(weather => Math.round(weather.main.temp))) - 5
                         }
                       },
                     ],
                   },                 
                title:{
                     display:true,
-                    text:'Weather Forecast',
-                    fontSize:20
+                    text:'Temperature',
+                    fontSize:20,
+                    
                   },
                   legend:{
                     display:false
