@@ -115,8 +115,10 @@ const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
                   plugins:{
                     datalabels:{
                       color:'blue',
+                      offset:100,
+                      align:"left",
                       padding:{
-                        bottom:100
+                        bottom:300,
                       },
                       label:{}
                     }
