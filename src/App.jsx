@@ -94,6 +94,7 @@ const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
         borderWidth: 1.5,
         data:weatherforecast.map(weather => Math.round(weather.main.temp))
         
+        
       }
     ]
 
@@ -115,28 +116,29 @@ const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
                   plugins:{
                     datalabels:{
                       color:'blue',
-                      offset:100,
-                      align:"left",
-                      padding:{
-                        bottom:300,
-                      },
-                      label:{}
+                      align:"end",
+                      anchor:"end",
+                      formatter:(value,context) => context.dataIndex===daysIndex? `${value}F`: ''
+                      
                     }
                   },
                   layout:{
+                
                     padding:{
-                      left:4,
-                      right:4
+                      left:10,
+                      right:10
                     }
                   },
                   scales: {
                     xAxes: [
                       {
+                        
                         display: false,
                       },
                     ],
                     yAxes: [
                       {
+                        
                         display: false,
                         ticks:{
                           min: Math.min(...weatherforecast.map(weather => Math.round(weather.main.temp))) - 5
@@ -148,11 +150,9 @@ const AdditionalInfo = ({ weatherforecast,daysIndex,setDaysIndex }) => {
                     display:true,
                     text:'Temperature',
                     fontSize:20,
-                    
+                    padding:20
                   },
-                  legend:{
-                    display:false
-                  }
+                  legend:{ display:false}
                 }}
               />
             </div>
